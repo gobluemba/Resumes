@@ -76,6 +76,34 @@ coverage as a first-class question, not an afterthought:
   plausible-but-unconfirmed gap), and let the user decide whether to
   act, rather than silently assuming someone else already covered it.
 
+Default stack, when proposing what to build. This is a preference for
+what to propose, not permission to build it unasked — the restriction
+above still applies.
+
+- Code: a second copy in a separate repo under this account (the
+  `<repo>-backup` naming already used elsewhere), kept current by a
+  scheduled mirror workflow — and, where the code is valuable enough to
+  justify it, a further mirror to a git host on a different provider
+  entirely (GitLab, Codeberg, etc.), so one provider's outage or account
+  issue can't take out every copy.
+- Uploaded files/documents (object storage): Cloudflare R2 as the
+  primary store — S3-compatible, and its zero egress fee matters
+  directly for a document-heavy app that serves files back to users —
+  with a scheduled sync to Backblaze B2 as the offsite copy on a
+  genuinely different provider. This is the default already in use
+  elsewhere on this account, and it fits specifically because of the
+  read-heavy traffic pattern a document-serving PWA produces, not as a
+  reflexive choice.
+- A structured database (Postgres, MySQL, etc.), if a project has one,
+  is a different backup question from object storage — use the
+  provider's own snapshot/point-in-time-recovery feature as the primary
+  safety net, and copy an exported dump into the same offsite
+  object-storage backup on the same schedule, rather than assuming
+  file-storage backup covers it.
+- Either way, propose a restore rehearsal alongside the mirror, not as a
+  someday follow-up — a backup nobody has restored from is still just
+  configured, not protected.
+
 This rule is about awareness and honest reporting — it does not
 authorize building backup infrastructure unasked, migrating storage
 providers, or taking any action with data on your own initiative.
