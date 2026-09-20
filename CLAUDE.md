@@ -42,3 +42,42 @@ This governs *how much CI runs*, not *what gets merged* — it never
 licenses skipping a required check or weakening a guardrail. The
 cheapest CI run is the one that passes the first time because the
 change was verified locally first.
+
+## Back up the code, and back up what the code stores
+
+Owner ask, standing: treat backup coverage as two separate questions for
+every project — the code itself, and any real data or user-uploaded
+files the application stores outside of git (documents, images,
+resumes, database records, anything a user submitted).
+
+The code. A single git host is not a backup — it is the primary copy.
+If a repo matters, know whether a second copy exists somewhere
+independent of that host (a mirror to a different provider, a periodic
+bundle/archive, or equivalent) and say so plainly when asked about a
+project's durability. Don't assume "it's on GitHub" answers the
+question.
+
+Data the code stores. When a project accepts uploads, stores generated
+documents, or persists anything a real user provided, treat backup
+coverage as a first-class question, not an afterthought:
+
+- "Backup configured" is not the same claim as "data protected." A
+  backup step that has never been exercised by an actual restore is
+  unverified, not safe. State the difference plainly rather than
+  treating the two as equivalent.
+- A backup that lives on the same platform/provider as the primary
+  storage is not independent — a single outage or account issue can
+  take out both. Note this as a real gap when you see it, not a
+  defensive nitpick.
+- If a project handles real user data or documents and has no
+  demonstrated backup/restore path at all, surface that explicitly and
+  plainly — per the audit calibration rule, label it observed (if you
+  can point to real data with no protection) or defensive (if it's a
+  plausible-but-unconfirmed gap), and let the user decide whether to
+  act, rather than silently assuming someone else already covered it.
+
+This rule is about awareness and honest reporting — it does not
+authorize building backup infrastructure unasked, migrating storage
+providers, or taking any action with data on your own initiative.
+Surfacing the gap and proposing the fix is the job; standing up new
+infrastructure is a separate, explicit decision the user makes.
